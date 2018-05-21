@@ -1,9 +1,8 @@
-package e2e
+package framework
 
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -21,7 +20,7 @@ func NewKubebuilderTest(dir, binDir string) *KubebuilderTest {
 	os.Setenv("TEST_ASSET_ETCD", strings.Join([]string{binDir, "etcd"}, "/"))
 	cmd := exec.Command("command", "-v", "kubebuilder")
 	if _, err := kt.runCommand(cmd); err != nil {
-		os.Setenv("PATH",strings.Join([]string{binDir, os.Getenv("PATH")}, ":"))
+		os.Setenv("PATH", strings.Join([]string{binDir, os.Getenv("PATH")}, ":"))
 	}
 	return &kt
 }
@@ -193,6 +192,5 @@ func (kt *KubebuilderTest) runCommand(cmd *exec.Cmd) ([]byte, error) {
 	if err != nil {
 		return output, fmt.Errorf("%s failed with error: %v", command, err)
 	}
-	log.Printf("%s finished successfully", command)
 	return output, nil
 }
